@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Folder;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Folder>
@@ -28,6 +29,15 @@ class FolderRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByOwner($ownerId)
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.owner = :owner')
+            ->setParameter('owner', $ownerId)
+            ->getQuery()
+            ->getResult();
     }
 
     public function remove(Folder $entity, bool $flush = false): void

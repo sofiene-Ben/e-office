@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Library;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Library>
@@ -16,13 +17,17 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LibraryRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+
+    public function __construct(ManagerRegistry $registry, ContainerInterface $container)
     {
         parent::__construct($registry, Library::class);
+        $this->container = $container;
     }
 
     public function save(Library $entity, bool $flush = false): void
     {
+        // $entity->setOwner($this->getUser());
+        $entity->setOwner($this->container->get('security.token_storage')->getToken()->getUser());
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {

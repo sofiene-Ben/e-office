@@ -1,0 +1,13 @@
+
+<div class="data-folder">   
+    {% if documents|length > 0 %}
+    <h2>Documents :</h2>
+    <ul>
+        {% for document in documents %}
+            <li><a href="{{ path('app_document_show', {'slug': document.slug}) }}">{{ document.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>no records found</p>
+    {% endif %}
+</div>

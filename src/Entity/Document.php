@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\DocumentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DocumentRepository;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -35,8 +37,6 @@ class Document
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
-    
-
     #[ORM\PrePersist]
     public function setSlug()
     {
@@ -54,7 +54,7 @@ class Document
     #[ORM\PreUpdate]
     public function setUpdatedAt()
     {
-        $this->updateAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
 

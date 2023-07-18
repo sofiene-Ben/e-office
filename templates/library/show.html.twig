@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Library{% endblock %}
+
+{% block body %}
+    <h1>{{library.name}}</h1>
+    <a href="{{ path('app_folder_new', {id: library.id}) }}">new</a>
+
+    
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for folder in library.folders %}
+                <tr>
+                    <td>{{ folder.name }}</td>
+                    <td>
+                        <a href="{{ path('app_folder_show', {id: library.id, slug: folder.slug}) }}">Voir</a>
+                        <a href="{{ path('app_folder_edit', {id: library.id, slug: folder.slug}) }}">edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}
+
