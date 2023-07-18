@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\LibraryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LibraryRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: LibraryRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -58,7 +59,7 @@ class Library
     #[ORM\PreUpdate]
     public function setUpdatedAt()
     {
-        $this->updateAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
 

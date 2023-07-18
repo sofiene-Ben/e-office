@@ -1,0 +1,11 @@
+<div class="data-folder">   
+    <ul>
+        {# {% for folder in folders %} #}
+        {% for folder in filteredFolders %}
+            <li><a href="{{ path('app_folder_show', {'slug': folder.slug}) }}">{{ folder.name }}</a></li>
+        {% else %}
+            <li colspan="6">no records found</li>
+        {% endfor %}
+
+    </ul>
+</div>

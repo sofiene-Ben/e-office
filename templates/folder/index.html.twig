@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Folder index{% endblock %}
+
+{% block body %}
+    <h1>Folder index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Slug</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for folder in folders %}
+            <tr>
+                <td>{{ folder.id }}</td>
+                <td>{{ folder.name }}</td>
+                <td>{{ folder.createdAt ? folder.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ folder.updatedAt ? folder.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ folder.slug }}</td>
+                <td>
+                    <a href="{{ path('app_folder_show', {id: library.id, slug: folder.slug}) }}">show</a>
+                    <a href="{{ path('app_folder_edit', {id: library.id, slug: folder.slug}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_folder_new', {id: library.id}) }}">Create new</a>
+    
+{% endblock %}
