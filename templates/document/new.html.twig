@@ -22,5 +22,5 @@
     <button class="btn">{{ button_label|default('Save') }}</button>
     {{ form_end(form) }}
 
-    <a href="{{ path('app_document_index') }}">back to list</a>
+    <a href="{{ path('app_document_index', {id: folder.id}) }}">back to list</a>
 {% endblock %}

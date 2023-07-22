@@ -27,6 +27,8 @@
                 <td>
                     <a href="{{ path('app_folder_show', {id: library.id, slug: folder.slug}) }}">show</a>
                     <a href="{{ path('app_folder_edit', {id: library.id, slug: folder.slug}) }}">edit</a>
+                    {{ include('folder/_delete_form.html.twig') }}
+
                 </td>
             </tr>
         {% else %}

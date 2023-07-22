@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Document;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 
 class PDFController extends AbstractController
 {
@@ -20,5 +24,13 @@ class PDFController extends AbstractController
         $response->setContent(file_get_contents($path));
 
         return $response;
+    }
+
+    #[Route('/{slug}/download', name: 'document_download')]
+    public function download(Request $request, Document $document): BinaryFileResponse
+    {
+        $file = new File($this->getParameter('upload_directory').'/'.$document->getName());
+
+        return $this->file($file);
     }
 }

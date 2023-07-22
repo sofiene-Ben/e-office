@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Folder;
 use App\Entity\Document;
 use App\Form\DocumentFormType;
 use App\Repository\DocumentRepository;
@@ -17,23 +18,28 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class DocumentController extends AbstractController
 {
     #[Route('/', name: 'app_document_index', methods: ['GET'])]
-    public function index(DocumentRepository $documentRepository): Response
+    public function index(Folder $folder, DocumentRepository $documentRepository): Response
     {
         return $this->render('document/index.html.twig', [
-            'documents' => $documentRepository->findAll(),
+            'documents' => $documentRepository->findBy(['folder' => $folder]),
         ]);
     }
 
 
     #[Route('/new', name: 'app_document_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, SluggerInterface $slugger, DocumentRepository $documentRepository): Response
+    public function new(Folder $folder, Request $request, SluggerInterface $slugger, DocumentRepository $documentRepository): Response
     {
+        // $libraryId = $request->query->get('library_id');
+        // $entityManager = $this->getDoctrine()->getManager();
+        // $folders = $entityManager->getRepository(Folder::class)->findBy(['library' => $libraryId]);
+
         $document = new Document();
         $form = $this->createForm(DocumentFormType::class, $document);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
             $document->setOwner($this->getUser());
+            $document->setFolder($folder);
             
             /** @var UploadedFile $file */
             $file = $form->get('file')->getData();
@@ -62,15 +68,18 @@ class DocumentController extends AbstractController
 
             $documentRepository->save($document, true);
             return $this->redirectToRoute('app_document_index');
-
+  
         }
 
-        return $this->render('document/new.html.twig', [
-            'form' => $form->createView(),
+        return $this->renderForm('document/new.html.twig', [
+            // 'form' => $form->createView(),
+            'form' => $form,
+            'document' => $document,
+            'folder' => $folder,
         ]);
     }
 
-    #[Route('/{slug}', name: 'app_document_show', methods: ['GET'])]
+    #[Route('{id}/{slug}/show', name: 'app_document_show', methods: ['GET'])]
     public function show(Document $document): Response
     {
         return $this->render('document/show.html.twig', [
