@@ -38,6 +38,7 @@ class Document
     private ?User $owner = null;
 
     #[ORM\PrePersist]
+    #[ORM\PreUpdate]
     public function setSlug()
     {
         $slugger = new AsciiSlugger('fr_FR');

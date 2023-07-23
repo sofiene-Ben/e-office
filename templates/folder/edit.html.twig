@@ -7,7 +7,7 @@
 
     {{ include('folder/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_folder_index', {id: library.id}) }}">back to list</a>
+    <a href="{{ path('app_folder_index', {slug_lib: library.slug}) }}">back to list</a>
 
     {{ include('folder/_delete_form.html.twig') }}
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block title %}{{ library.name }}{% endblock %}
 
-{% block add_folder %}{{ path('app_folder_new', {id: library.id}) }}{% endblock add_folder %}
+{% block add_folder %}{{ path('app_folder_new', {slug_lib: library.slug}) }}{% endblock add_folder %}
 
 {% block document %}{% endblock document %}
 
@@ -12,7 +12,7 @@
                 <h1><li class="data-list">{{ library.name }} :</li></h1>
             {% for folder in library.folders %}
                 <li class="data-list">
-                    <a href="{{ path('app_folder_show', {id: library.id, slug: folder.slug}) }}">{{ folder.name }}</a>
+                    <a href="{{ path('app_folder_show', {slug_lib: library.slug, slug: folder.slug}) }}">{{ folder.name }}</a>
                     {{ include('folder/_delete_form.html.twig') }}
                     
                 </li>

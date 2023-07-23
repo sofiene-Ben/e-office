@@ -32,9 +32,9 @@
 
     <embed src="{{ asset('uploads/documents/' ~ document.name) }}" type="application/pdf">
 
-    <a href="{{ path('app_document_index') }}">back to list</a>
+    <a href="{{ path('app_document_index', {slug_folder: folder.slug} ) }}">back to list</a>
 
-    <a href="{{ path('app_document_edit', {'slug': document.slug}) }}">edit</a>
+    <a href="{{ path('app_document_edit', {slug_folder: folder.slug, slug: document.slug}) }}">edit</a>
 
     {{ include('document/_delete_form.html.twig') }}
     

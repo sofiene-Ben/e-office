@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Library;
 use App\Form\LibraryType;
 use App\Repository\LibraryRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/library')]
 class LibraryController extends AbstractController
@@ -69,10 +70,33 @@ class LibraryController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}', name: 'app_library_delete', methods: ['POST'])]
-    public function delete(Request $request, Library $library, LibraryRepository $libraryRepository): Response
+    #[Route('/{slug}/delete', name: 'app_library_delete', methods: ['POST'])]
+    public function delete(Request $request, Library $library, LibraryRepository $libraryRepository, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$library->getId(), $request->request->get('_token'))) {
+            
+            $folders = $library->getFolders();
+            foreach($folders as $folder){
+                $folder->setLibrary(null);
+                $documents = $folder->getDocuments();
+                foreach($documents as $document) {
+                    $oldDocumentName = $document->getName();
+                    $document->setFolder(null);
+    
+                    //supp de doc en bdd
+                    $em->remove($document);
+    
+                    // supp du file dans le dossier upload
+                    $filePath = $this->getParameter('upload_directory').'/'.$oldDocumentName;
+                    // Vérifier si le fichier existe avant de le supprimer
+                    if (file_exists($filePath)) {
+                        // Supprimer le fichier
+                        unlink($filePath);
+                    }
+                }
+                $em->remove($folder);
+            }
+
             $libraryRepository->remove($library, true);
         }
 

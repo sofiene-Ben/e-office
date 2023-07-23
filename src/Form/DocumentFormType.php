@@ -25,16 +25,7 @@ class DocumentFormType extends AbstractType
     {
         $user = $this->security->getUser();
         $builder
-            ->add('name')
-            // ->add('folder', EntityType::class, [
-            //     'class' => Folder::class,
-            //     'choice_label' => 'name',
-            //     'query_builder' => function (\Doctrine\ORM\EntityRepository $er) use ($user) {
-            //         return $er->createQueryBuilder('l')
-            //             ->where('l.owner = :user')
-            //             ->setParameter('user', $user);
-            //     },
-            // ])
+            // ->add('name')
             ->add('file', FileType::class, [
                 'label' => 'Upload File',
                 'required' => false,

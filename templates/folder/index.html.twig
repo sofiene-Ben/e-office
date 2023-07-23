@@ -25,8 +25,8 @@
                 <td>{{ folder.updatedAt ? folder.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ folder.slug }}</td>
                 <td>
-                    <a href="{{ path('app_folder_show', {id: library.id, slug: folder.slug}) }}">show</a>
-                    <a href="{{ path('app_folder_edit', {id: library.id, slug: folder.slug}) }}">edit</a>
+                    <a href="{{ path('app_folder_show', {slug_lib: library.slug, slug: folder.slug}) }}">show</a>
+                    <a href="{{ path('app_folder_edit', {slug_lib: library.slug, slug: folder.slug}) }}">edit</a>
                     {{ include('folder/_delete_form.html.twig') }}
 
                 </td>
@@ -39,6 +39,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_folder_new', {id: library.id}) }}">Create new</a>
+    <a href="{{ path('app_folder_new', {slug_lib: library.slug}) }}">Create new</a>
     
 {% endblock %}
