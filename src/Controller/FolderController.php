@@ -7,12 +7,15 @@ use App\Entity\Library;
 use App\Form\FolderType;
 use App\Repository\FolderRepository;
 use App\Repository\DocumentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/{id}/folder')]
+#[Route('/{slug_lib}/folder')]
+#[Entity('library', expr: 'repository.findOneBySlug(slug_lib)')]
 class FolderController extends AbstractController
 {
 
@@ -26,7 +29,7 @@ class FolderController extends AbstractController
     public function index(Library $library, FolderRepository $folderRepository): Response
     {
         return $this->render('folder/index.html.twig', [
-            'folders' => $folderRepository->findAll(),
+            'folders' => $folderRepository->findBy(['library' => $library]),
         ]);
     }
 
@@ -52,9 +55,11 @@ class FolderController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}', name: 'app_folder_show', methods: ['GET'])]
+    #[Route('/{slug}/show', name: 'app_folder_show', methods: ['GET'])]
+    #[Entity('folder', expr: 'repository.findOneBySlug(slug)')]
     public function show(Library $library, Folder $folder): Response
     {
+
         $documents = $this->documentRepository->findBy(['folder' => $folder]);
 
         return $this->render('folder/show.html.twig', [
@@ -65,8 +70,10 @@ class FolderController extends AbstractController
     }
 
     #[Route('/{slug}/edit', name: 'app_folder_edit', methods: ['GET', 'POST'])]
-    public function edit(Library $library, Request $request, Folder $folder, FolderRepository $folderRepository): Response
+    #[Entity('folder', expr: 'repository.findOneBySlug(slug)')]
+    public function edit(Library $library, Folder $folder, Request $request): Response
     {
+
         $form = $this->createForm(FolderType::class, $folder);
         $form->handleRequest($request);
 
@@ -84,13 +91,30 @@ class FolderController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}', name: 'app_folder_delete', methods: ['POST'])]
-    public function delete(Library $library, Request $request, Folder $folder, FolderRepository $folderRepository): Response
+    #[Route('/{slug}/delete', name: 'app_folder_delete', methods: ['POST'])]
+    #[Entity('folder', expr: 'repository.findOneBySlug(slug)')]
+    public function delete(Library $library, Folder $folder, Request $request, FolderRepository $folderRepository, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$folder->getId(), $request->request->get('_token'))) {
+            $documents = $folder->getDocuments();
+            foreach($documents as $document) {
+                $oldDocumentName = $document->getName();
+                $document->setFolder(null);
+
+                //supp de doc en bdd
+                $em->remove($document);
+
+                // supp du file dans le dossier upload
+                $filePath = $this->getParameter('upload_directory').'/'.$oldDocumentName;
+                // Vérifier si le fichier existe avant de le supprimer
+                if (file_exists($filePath)) {
+                    // Supprimer le fichier
+                    unlink($filePath);
+                }
+            }
             $folderRepository->remove($folder, true);
         }
 
-        return $this->redirectToRoute('app_folder_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_library_show', ['slug' => $library->getSlug()], Response::HTTP_SEE_OTHER);
     }
 }
