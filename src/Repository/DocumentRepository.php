@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Folder;
 use App\Entity\Document;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -20,6 +21,15 @@ class DocumentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Document::class);
+    }
+
+    public function findBySearch($word, Folder $folder){
+        $qb = $this->createQueryBuilder('d')
+            ->where('d.name LIKE :search AND d.folder = :folder')
+            ->setParameter('search', '%'.$word.'%')
+            ->setParameter('folder', $folder);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function save(Document $entity, bool $flush = false): void

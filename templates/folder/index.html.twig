@@ -5,6 +5,13 @@
 {% block body %}
     <h1>Folder index</h1>
 
+    <div class="search">
+        <!-- <input type="text" class="search-inp"> -->
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+
     <table class="table">
         <thead>
             <tr>

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Folder;
+use App\Entity\Library;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,6 +21,15 @@ class FolderRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Folder::class);
+    }
+
+    public function findBySearch($word, Library $library){
+        $qb = $this->createQueryBuilder('f')
+            ->where('f.name LIKE :search AND f.library = :library')
+            ->setParameter('search', '%'.$word.'%')
+            ->setParameter('library', $library);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function save(Folder $entity, bool $flush = false): void
