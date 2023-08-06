@@ -6,13 +6,18 @@
 {% block add_document %}{{ path('app_document_new', {slug_folder: folder.slug}) }}{% endblock add_document %}
 
     {% block data_show %}
-
+    <div class="search">
+        <!-- <input type="text" class="search-inp"> -->
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
     {% if documents|length > 0 %}
         <div class="data-folder">   
             <ul>
                 <h1><li class="data-list">{{ folder.name }} :</li></h1>
 
-            {% for document in folder.documents %}
+            {% for document in documents %}
 
                 <li class="data-list">
                     <a href="{{ path('app_document_show', {slug_folder: folder.slug, slug: document.slug}) }}">{{ document.name }}</a>

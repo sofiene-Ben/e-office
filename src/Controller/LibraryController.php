@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Folder;
 use App\Entity\Library;
 use App\Form\LibraryType;
+use App\Form\SearchDataType;
+use App\Repository\FolderRepository;
 use App\Repository\LibraryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +18,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class LibraryController extends AbstractController
 {
     #[Route('/', name: 'app_library_index', methods: ['GET'])]
-    public function index(LibraryRepository $libraryRepository): Response
+    public function index(LibraryRepository $libraryRepository, Request $request): Response
     {
+        // $libraries = $libraryRepository->findBy(['owner' => $this->getUser()]);
+
+        // $form = $this->createForm(SearchDataType::class);
+        // $search = $form->handleRequest($request);
+
+        //     if($form->isSubmitted() && $form->isValid()){
+        //     // on recherche les dossier correspondant aux mots clés
+        //     $libraries = $libraryRepository->findBySearch($search->get('word')->getData(), $library);
+        // }
+
         return $this->render('library/index.html.twig', [
             'libraries' => $libraryRepository->findBy(['owner' => $this->getUser()]),
+            // 'libraries' => $libraries,
+            // 'form' => $form->createView(),
+
             
             
         ]);
@@ -43,12 +59,24 @@ class LibraryController extends AbstractController
             'form' => $form,
         ]);
     }
-
-    #[Route('/{slug}', name: 'app_library_show', methods: ['GET'])]
-    public function show(Library $library): Response
+    
+    #[Route('/{slug}', name: 'app_library_show', methods: ['GET', 'POST'])]
+    public function show(Library $library, FolderRepository $folderRepository, Request $request): Response
     {
+        $folders = $folderRepository->findBy(['library' => $library]);
+
+        $form = $this->createForm(SearchDataType::class);
+        $search = $form->handleRequest($request);
+
+            if($form->isSubmitted() && $form->isValid()){
+            // on recherche les dossier correspondant aux mots clés
+            $folders = $folderRepository->findBySearch($search->get('word')->getData(), $library);
+        }
+
         return $this->render('library/show.html.twig', [
             'library' => $library,
+            'folders' => $folders,
+            'form' => $form->createView(),
         ]);
     }
 
