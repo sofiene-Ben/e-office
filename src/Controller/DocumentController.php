@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+// use App\Entity\User;
 use App\Entity\Folder;
 use App\Entity\Document;
 use App\Form\DocumentFormType;
+use App\Form\DocumentShareType;
 use App\Repository\DocumentRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -78,13 +82,36 @@ class DocumentController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/show', name: 'app_document_show', methods: ['GET'])]
+    #[Route('/{slug}/show', name: 'app_document_show', methods: ['GET', 'POST'])]
     #[Entity('document', expr: 'repository.findOneBySlug(slug)')]
-    public function show(Folder $folder, Document $document): Response
+    public function show(Folder $folder, Document $document, Request $request, MailerInterface $mailer): Response
     {
+        $username = "test@live.fr";
+
+        $form = $this->createForm(DocumentShareType::class);
+        $contact = $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $email = (new TemplatedEmail())
+                ->from($username)
+                ->to($contact->get('email')->getData())
+                ->subject('Vous venez de recevoir un nouveau document')
+                ->htmlTemplate('emails/share_document.html.twig')
+                ->context([
+                    'document' => $document,
+                    'mail' => $username,
+                    'message' => $contact->get('message')->getData()
+                ]);
+            $mailer->send($email);
+
+            $this->addFlash('message', 'votre document a bien été envoyer');
+            return $this->redirectToRoute('app_library_index');
+        }
+
         return $this->render('document/show.html.twig', [
             'document' => $document,
             'folder' => $folder,
+            'form' => $form->createView(),
         ]);
     }
 
