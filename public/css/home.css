@@ -1,0 +1,138 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+* {
+    font-size: 17px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}
+
+body {
+    background-color: #fbfbfd;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.wrapper {
+    background-color: #fbfbfd;
+}
+
+.navbar-brand {
+    color: #FFF;
+}
+
+.navbar-brand:hover {
+    color: #FFF;
+}
+
+.logo {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.logo-img {
+    width: 100%;
+}
+
+.title {
+    margin-bottom: 35px;
+}
+
+.title h1 {
+    font-size: 60px;
+    text-align: center;
+    font-weight: 700;
+    font-family: 'MONTSERRAT', sans-serif;
+}
+
+.connexion {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.connexion a {
+    background-color: #000;
+    border: solid 1px #000;
+    border-radius: 25px;
+}
+
+.connexion a:hover {
+    background-color: #000;
+    border: solid 1px #FFF;
+    border-radius: 25px;
+}
+
+
+.slogant {
+    margin: 30px 0;
+}
+
+.slogant p {
+    font-weight: 700;
+    font-size: 23px;
+}
+
+.card-containt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card {
+    margin: 30px 0;
+    box-shadow: 2px 4px 37px 10px rgba(0, 0, 0, 0.3);
+    width: 18rem;
+    border-radius: 13px;
+    height: 602.5px;
+}
+
+.card-in {
+    padding: 20px;
+}
+
+.card-img {
+    padding: 8px 0;
+}
+
+.card-img img {
+    border-radius: 5px;
+    height: 180px;
+
+}
+
+.card-title {
+    padding: 8px 0;
+    margin-bottom: 0px;
+}
+
+.card-text {
+    padding: 8px 0;
+}
+
+footer {
+    margin-top: 120px;
+}
+
+
+@media only screen and (min-width:800px) {
+    .card-containt {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .card {
+        margin: 30px;
+    }
+}
+
+@media only screen and (min-width: 500px) {
+    .title h1  {
+        font-size: 95px;
+    }
+}

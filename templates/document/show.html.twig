@@ -3,11 +3,11 @@
 {% block title %}document{% endblock %}
 
 {% block javascripts %}
-    <script>
-        window.onload = () => {
-            document.querySelector("#document_share_title").value = "{{ document.name|raw }}"
-        }
-    </script>
+<script>
+  window.onload = () => {
+      document.querySelector("#document_share_title").value = "{{ document.name|raw }}"
+  };
+</script>
     {{ parent() }}
 {% endblock javascripts %}
 
@@ -47,26 +47,38 @@
 
 {{ include('document/_delete_form.html.twig') }}
 
-<div class="modal shadow-1 white modal-falling" id="modal-share" data-ax="modal">
-    <div class="modal-header">Share This Document</div>
 
-    <div class="divider"></div>
-    {{ form_start(form) }}
+<!-- modal 1 -->
+
+<!-- modal 2 -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Share
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Share This Document</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {{ form_start(form) }}
+      <div class="modal-body">
         {{ form_widget(form.title) }}
         {{ form_row(form.email) }}
         {{ form_row(form.message) }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submite" class="btn btn-primary">Share</button>
+      </div>
+      {{ form_end(form) }}
     </div>
-
-    <div class="divider"></div>
-
-    <div class="modal-footer">
-        <button class="btn small secondary">Envoyer</button>
-        <button data-target="modal-share" class="ml-auto btn shadow-1 rounded-1 btn-small primary">Close</button>
-    </div>
-    {{ form_end(form) }}
+  </div>
 </div>
-
-<button class="btn primary rounded-1" data-target="modal-share">Open</button>
 
 {% endblock %}

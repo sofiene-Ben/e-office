@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ConsultingController!{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'class': 'form-material form-material-bordered'}}) }}
+    {{ form_row(form.code, {attr: {class: 'form-control rounded-1'}}) }}
+    <button type="submit">soumettre</button>
+    {{ form_end(form) }}
+{% endblock %}

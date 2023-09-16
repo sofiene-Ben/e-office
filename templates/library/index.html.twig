@@ -1,20 +1,61 @@
 {% extends 'base.html.twig' %}
 
+
+
 {% block title %}Library index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/library.css') }}">
+{% endblock stylesheets %}
 
 {% block features %}{% endblock features %}
 
 {% block data_show %}
 
-    <ul>
-        <h1><li class="data-list">Library index :</li></h1>
-        {% for library in libraries %}
-            <li class="data-list"><a href="{{ path('app_library_show', {'slug': library.slug}) }}">{{ library.name }}</a></li>
-        {% else %}
-            <li>no records found</li>
-        {% endfor %}
-        
-    </ul>
+{# <ul>
+    <h1>
+        <li class="data-list">Library index :</li>
+    </h1>
+    {% for library in libraries %}
+    <li class="data-list"><a href="{{ path('app_library_show', {'slug': library.slug}) }}">{{ library.name }}</a></li>
+    {% else %}
+    <li>no records found</li>
+    {% endfor %}
 
-    <a href="{{ path('app_library_new') }}">Create new</a>
+</ul> #}
+<div class="container">
+    <div class="text-right pb-2 pt-2">
+        <button class="btn btn-primary">
+            <a href="{{ path('app_library_new') }}">Create new</a>
+        </button>
+    </div>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Library</th>
+                <th scope="col" class="text-right" >Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for library in libraries %}
+            <tr>
+                <th scope="row" class="th-name">{{ library.name }}</th>
+                <td class="text-right">
+                    <button class="btn btn-primary btn-rud">Supprimer</button>
+                    <button class="btn btn-secondary btn-rud">Modifier</button>
+                    <button class="btn btn-primary btn-rud"><a href="{{ path('app_library_show', {'slug': library.slug}) }}">Voir</a></button>
+                </td>
+                {% else %}
+                <th>no records found</th>
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}
