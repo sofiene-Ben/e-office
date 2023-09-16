@@ -1,0 +1,29 @@
+
+a{
+    color: #FFF;
+}
+
+a:hover {
+    color:#FFF;
+}
+
+.navbar-collapse {
+    margin-top: 19px;
+    width: 100%;
+    background: rgb(248, 249, 250);
+    border-radius: 6px;
+    border: 1px solid rgb(206, 212, 218);
+}
+
+.navbar-collapse form {
+    margin: 0 10px;
+}
+
+table .th-name {
+    vertical-align: middle;
+}
+
+.btn-rud{
+    font-size: 10px;
+    margin: 2px 0;
+}

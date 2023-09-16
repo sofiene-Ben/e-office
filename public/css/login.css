@@ -1,0 +1,12 @@
+.wrapper{
+    background-color: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container-small {
+    max-width: 530px;
+    padding: 20px 45px;
+    background-color: #fff;
+    border-radius: 5px;
+}
