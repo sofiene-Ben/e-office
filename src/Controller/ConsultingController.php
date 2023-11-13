@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Form\FormError;
 use App\Entity\Consulting;
 use App\Form\ConsultingType;
 use Symfony\Component\HttpFoundation\Request;

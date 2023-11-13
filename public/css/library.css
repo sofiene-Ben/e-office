@@ -3,10 +3,11 @@ a{
     color: #FFF;
 }
 
-a:hover {
+/* a:hover {
     color:#FFF;
-}
+}  */
 
+/* ------ navbar -------- */
 .navbar-collapse {
     margin-top: 19px;
     width: 100%;
@@ -19,11 +20,98 @@ a:hover {
     margin: 0 10px;
 }
 
-table .th-name {
-    vertical-align: middle;
+/* ------------------ */
+
+
+/* th a {
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+}
+.modal-body {
+    display: flex;
+    justify-content: center;
 }
 
-.btn-rud{
-    font-size: 10px;
-    margin: 2px 0;
+.btn-rud {
+    margin: 0 5px;
+} */
+
+
+
+@media only screen and (min-width: 992px) {
+
+/* ------ navbar -------- */
+
+    .navbar-collapse {
+        margin-top: 0px;
+        width: 100%;
+        background: rgb(248, 249, 250);
+        border-radius: 0px;
+        border: 0px
+    }
+    
+    .navbar-collapse form {
+        margin: 0 10px;
+    }
+}
+
+
+/* tesstttt */
+
+button a {
+    color: #FFF;
+}
+
+button a:hover{
+    color: #FFF;
+}
+
+th a {
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+}
+
+.btn-box {
+    display: flex;
+    justify-content: space-between;
+}
+.modal-body {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-rud {
+    margin: 0 5px;
+}
+
+.modal-body a {
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.btn.btn-primary,
+.btn.btn-secondary{
+    background-color: #000;
+    border-color: #000;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-secondary:hover{
+    background-color: #000000d1;
+    border-color: #FFF;
+}
+
+.btn.btn-primary:focus,
+.btn.btn-secondary:focus{
+    background-color: #000000d1;
+    border-color: #FFF;
+}
+
+
+@media only screen and (min-width: 992px) {
+    .btn-box {
+        display: block;
+    }
 }

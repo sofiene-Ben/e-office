@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DocumentRepository;
@@ -36,6 +38,14 @@ class Document
     #[ORM\ManyToOne(inversedBy: 'documents')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
+
+    #[ORM\OneToMany(mappedBy: 'document', targetEntity: Consulting::class, orphanRemoval: true)]
+    private Collection $consultings;
+
+    public function __construct()
+    {
+        $this->consultings = new ArrayCollection();
+    }
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
@@ -114,6 +124,36 @@ class Document
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Consulting>
+     */
+    public function getConsultings(): Collection
+    {
+        return $this->consultings;
+    }
+
+    public function addConsulting(Consulting $consulting): static
+    {
+        if (!$this->consultings->contains($consulting)) {
+            $this->consultings->add($consulting);
+            $consulting->setDocument($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConsulting(Consulting $consulting): static
+    {
+        if ($this->consultings->removeElement($consulting)) {
+            // set the owning side to null (unless already changed)
+            if ($consulting->getDocument() === $this) {
+                $consulting->setDocument(null);
+            }
+        }
 
         return $this;
     }

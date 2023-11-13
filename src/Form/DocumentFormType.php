@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Folder;
 use App\Entity\Document;
 use Symfony\Component\Form\AbstractType;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -26,9 +27,12 @@ class DocumentFormType extends AbstractType
         $user = $this->security->getUser();
         $builder
             // ->add('name')
-            ->add('file', FileType::class, [
-                'label' => 'Upload File',
-                'required' => false,
+            ->add('file', DropzoneType::class, [
+                // 'label' => 'Upload File',
+                // 'attr' => [
+                //     'class' => 'form-control-file',
+                // ],
+                'required' => true,
                 'mapped' => false,
             ]);
     }

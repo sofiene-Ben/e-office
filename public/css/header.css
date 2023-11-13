@@ -1,29 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-* {
+
+/* * {
     box-sizing: border-box;
     margin: 0;
     font-family: 'Inter', sans-serif;
-}
+} */
 
-html {
-    height: 100%;
-}
 
-body {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-a {
-    font-size: 11px;
-    color: #000;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-ul {
+/* ul {
     padding: 0px;
 }
 
@@ -42,26 +27,29 @@ nav {
     background-color: #000;
     color: #FFF;
     height: 60px;
-}
+} */
 
 
 footer {
     background: #D9D9D9;
 }
 
-.wrapper {
-    flex: 1;
+footer a {
+    font-size: inherit;
+    text-decoration: none;
+    color: inherit;
 }
 
-.header-container {
+
+/* .header-container {
     display: flex;
     justify-content: space-between;
     min-width: 100%;
     text-align: center;
     padding-left: 20px;
     padding-right: 20px;
-}
-
+} */
+/* 
 .search {
     display: flex;
 }
@@ -75,9 +63,9 @@ footer {
 
 .btn-menu {
     padding-left: 10px;
-}
+} */
 
-.features {
+/* .features {
     display: flex;
     justify-content: center;
     min-height: 130px;
@@ -119,9 +107,9 @@ h1 .data-list {
     align-items: center;
     min-height: 102px;
     font-size: 14px;
-}
+} */
 
-.social, .language, .legal {
+/* .social, .language, .legal {
     padding: 6px 0;
 }
 
@@ -132,4 +120,58 @@ h1 .data-list {
 .social-item {
     padding: 0 5px;
     text-transform: capitalize;
+} */
+
+
+
+.navbar-collapse {
+    /* margin-top: 19px; */
+    width: 100%;
+    background: rgb(248, 249, 250);
+    border-radius: 6px;
+    /* border: 1px solid rgb(206, 212, 218); */
+}
+
+.navbar-collapse form {
+    margin: 0 10px;
+}
+
+form .btn-outline-success {
+    color: #000;
+    border-color: #000;
+}
+
+form .btn-outline-success:hover {
+    color: #FFF;
+    background-color: #000;
+    border-color: #000;
+}
+
+form .btn-outline-success:active {
+    color: #FFF;
+    background-color: #000;
+    border-color: #000;
+}
+
+form .btn-outline-success:focus {
+    color: #FFF;
+    background-color: #000;
+    border-color: #000;
+}
+
+@media only screen and (min-width: 992px) {
+
+/* ------ navbar -------- */
+
+    .navbar-collapse {
+        margin-top: 0px;
+        width: 100%;
+        background: rgb(248, 249, 250);
+        border-radius: 0px;
+        border: 0px
+    }
+    
+    .navbar-collapse form {
+        margin: 0 10px;
+    }
 }

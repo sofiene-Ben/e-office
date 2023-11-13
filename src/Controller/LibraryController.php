@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Folder;
 use App\Entity\Library;
 use App\Form\LibraryType;
@@ -20,23 +19,8 @@ class LibraryController extends AbstractController
     #[Route('/', name: 'app_library_index', methods: ['GET'])]
     public function index(LibraryRepository $libraryRepository, Request $request): Response
     {
-        // $libraries = $libraryRepository->findBy(['owner' => $this->getUser()]);
-
-        // $form = $this->createForm(SearchDataType::class);
-        // $search = $form->handleRequest($request);
-
-        //     if($form->isSubmitted() && $form->isValid()){
-        //     // on recherche les dossier correspondant aux mots clés
-        //     $libraries = $libraryRepository->findBySearch($search->get('word')->getData(), $library);
-        // }
-
         return $this->render('library/index.html.twig', [
             'libraries' => $libraryRepository->findBy(['owner' => $this->getUser()]),
-            // 'libraries' => $libraries,
-            // 'form' => $form->createView(),
-
-            
-            
         ]);
     }
 
@@ -63,6 +47,9 @@ class LibraryController extends AbstractController
     #[Route('/{slug}', name: 'app_library_show', methods: ['GET', 'POST'])]
     public function show(Library $library, FolderRepository $folderRepository, Request $request): Response
     {
+        if($library->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
         $folders = $folderRepository->findBy(['library' => $library]);
 
         $form = $this->createForm(SearchDataType::class);
@@ -83,6 +70,10 @@ class LibraryController extends AbstractController
     #[Route('/{slug}/edit', name: 'app_library_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Library $library, LibraryRepository $libraryRepository): Response
     {
+        if($library->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
+
         $form = $this->createForm(LibraryType::class, $library);
         $form->handleRequest($request);
 

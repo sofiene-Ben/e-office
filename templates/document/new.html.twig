@@ -2,13 +2,26 @@
 
 {% block title %}New Document{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/cu_style.css') }}">
+{% endblock stylesheets %}
+
+
 {% block body %}
-    <h1>Create new Document</h1>
+<div class="container main">
+  <div class="back-btn">
+    <button class="btn btn-primary">
+      <a href="{{ path('app_folder_show', {slug_lib: folder.library.slug, slug: folder.slug}) }}"> < back</a>
+    </button>
+  </div>
+ 
+  {{ form_start(form)}}
+  {{ form_widget(form) }}
+  <button type="submit" class="btn btn-primary">chargement fichier</button>
+{{ form_end(form) }}
+  
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
 
-    <a href="{{ path('app_document_index', {slug_folder: folder.slug}) }}">back to list</a>
+</div>
 {% endblock %}

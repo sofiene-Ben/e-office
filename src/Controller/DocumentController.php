@@ -4,10 +4,13 @@ namespace App\Controller;
 
 // use App\Entity\User;
 use App\Entity\Folder;
+use App\Entity\Library;
 use App\Entity\Document;
+use App\Entity\Consulting;
 use App\Form\DocumentFormType;
 use App\Form\DocumentShareType;
 use App\Repository\DocumentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -16,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -26,6 +30,9 @@ class DocumentController extends AbstractController
     #[Route('/', name: 'app_document_index', methods: ['GET'])]
     public function index(Folder $folder, DocumentRepository $documentRepository): Response
     {
+        if($folder->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
         return $this->render('document/index.html.twig', [
             'documents' => $documentRepository->findBy(['folder' => $folder]),
             'folder' => $folder,
@@ -36,7 +43,9 @@ class DocumentController extends AbstractController
     #[Route('/new', name: 'app_document_new', methods: ['GET', 'POST'])]
     public function new(Folder $folder, Request $request, SluggerInterface $slugger, DocumentRepository $documentRepository): Response
     {
-
+        if($folder->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
         $document = new Document();
         $form = $this->createForm(DocumentFormType::class, $document);
         $form->handleRequest($request);
@@ -71,7 +80,7 @@ class DocumentController extends AbstractController
             }
 
             $documentRepository->save($document, true);
-            return $this->redirectToRoute('app_document_index', ['slug_folder' => $folder->getSlug()]);
+            return $this->redirectToRoute('app_document_show', ['slug_folder' => $folder->getSlug(), 'slug' => $document->getslug()]);
   
         }
 
@@ -84,28 +93,48 @@ class DocumentController extends AbstractController
 
     #[Route('/{slug}/show', name: 'app_document_show', methods: ['GET', 'POST'])]
     #[Entity('document', expr: 'repository.findOneBySlug(slug)')]
-    public function show(Folder $folder, Document $document, Request $request, MailerInterface $mailer): Response
+    public function show(Folder $folder, Document $document, Request $request, MailerInterface $mailer, EntityManagerInterface $em): Response
     {
-        $username = "test@live.fr";
+        if($document->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
+
+        $contactEmail = $this->getParameter('app.contact_email');
 
         $form = $this->createForm(DocumentShareType::class);
-        $contact = $form->handleRequest($request);
+        $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $consulting = new Consulting;
+            $consulting->setDocument($document);
+            $consulting->setOwner($this->getUser());
+            $consulting->setTarget($form->get('email')->getData());
+
+            $random = random_int(15545, 1000000);
+            $consulting->setCode($random);
+            $consulting->setSlug(uniqid('', true));
+
+            $em->persist($consulting);
+            $em->flush();
+
             $email = (new TemplatedEmail())
-                ->from($username)
-                ->to($contact->get('email')->getData())
+                ->from($contactEmail)
+                ->to($form->get('email')->getData())
                 ->subject('Vous venez de recevoir un nouveau document')
                 ->htmlTemplate('emails/share_document.html.twig')
                 ->context([
                     'document' => $document,
-                    'mail' => $username,
-                    'message' => $contact->get('message')->getData()
+                    'mail' => $this->getUser()->getEmail(),
+                    'code' => $consulting->getCode(),
+                    'link' => $this->generateUrl('app_consulting',['slug' => $consulting->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
+                    'message' => $form->get('message')->getData()
                 ]);
             $mailer->send($email);
 
-            $this->addFlash('message', 'votre document a bien été envoyer');
-            return $this->redirectToRoute('app_library_index');
+            $this->addFlash('success', 'votre document a bien été envoyer');
+            return $this->redirectToRoute('app_document_show', [
+                'slug_folder' => $folder->getSlug(),
+                'slug' => $document->getSlug()]);
         }
 
         return $this->render('document/show.html.twig', [
@@ -119,6 +148,10 @@ class DocumentController extends AbstractController
     #[Entity('document', expr: 'repository.findOneBySlug(slug)')]
     public function edit(Folder $folder, Request $request, SluggerInterface $slugger, Document $document, DocumentRepository $documentRepository): Response
     {
+        if($document->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
+
         $oldDocumentName = $document->getName();
         $form = $this->createForm(DocumentFormType::class, $document);
         $form->handleRequest($request);
@@ -160,7 +193,7 @@ class DocumentController extends AbstractController
                 unlink($filePath);
             }
 
-            return $this->redirectToRoute('app_document_index', ['slug_folder' => $folder->getSlug()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_document_show', ['slug_folder' => $folder->getSlug(), 'slug' => $document->getslug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('document/edit.html.twig', [
@@ -189,6 +222,6 @@ class DocumentController extends AbstractController
             
         }
 
-        return $this->redirectToRoute('app_document_index', ['slug_folder' => $folder->getSlug()], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_folder_show', ['slug_lib' => $folder->getLibrary()->getSlug(), 'slug' => $folder->getSlug()], Response::HTTP_SEE_OTHER);
     }
 }

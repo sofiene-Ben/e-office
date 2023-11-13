@@ -14,7 +14,8 @@ class ConsultingType extends AbstractType
         $builder
             ->add('code', TextType::class, [
                 'attr' => [
-                    'placeholder' => 'Entrer le code' 
+                    'placeholder' => 'Entrer le code',
+                    'label' => false,
                 ]
             ])
         ;

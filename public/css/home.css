@@ -12,10 +12,14 @@ body {
     background-color: #fbfbfd;
 }
 
-h3 {
+div h3 {
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     font-weight: 700;
+}
+
+nav {
+    background-color: #000;
 }
 
 .wrapper {
@@ -84,7 +88,7 @@ h3 {
     align-items: center;
 }
 
-.card {
+div .card {
     margin: 30px 0;
     box-shadow: 2px 4px 37px 10px rgba(0, 0, 0, 0.3);
     width: 18rem;
@@ -106,13 +110,17 @@ h3 {
 
 }
 
-.card-title {
+div .card-title {
     padding: 8px 0;
     margin-bottom: 0px;
 }
 
 .card-text {
     padding: 8px 0;
+}
+
+.card-text p {
+    font-size: 16px;
 }
 
 footer {
@@ -126,7 +134,7 @@ footer {
         justify-content: center;
     }
 
-    .card {
+    div .card {
         margin: 30px;
     }
 }

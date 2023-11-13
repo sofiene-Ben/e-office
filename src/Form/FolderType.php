@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FolderType extends AbstractType
 {
@@ -23,7 +24,10 @@ class FolderType extends AbstractType
     {
         $user = $this->security->getUser();
         $builder
-            ->add('name');
+            ->add('name', TextType::class, [
+                'label' => 'nom :',
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
