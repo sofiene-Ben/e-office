@@ -42,6 +42,7 @@
 
 
     <div class="container">
+
         <div class="text-right pb-2 pt-2 btn-box">
             <button class="btn btn-secondary">
                 <a href="{{ path('app_library_show', {'slug': library.slug}) }}"> < back</a>
@@ -49,6 +50,7 @@
             <button class="btn btn-primary">
                 <a href="{{ path('app_document_new', {slug_folder: folder.slug}) }}">Create new</a>
             </button>
+
         </div>
     
     
@@ -62,7 +64,9 @@
             <tbody>
                 {% for document in documents %}
                 <tr>
+
                     <th scope="row" class="th-name"><a href="{{ path('app_document_show', {slug_folder: folder.slug, slug: document.slug}) }}">{{ document.name }}</a></th>
+
                     <td class="text-right">
                         {# <button class="btn btn-primary btn-rud">Supprimer</button>
                         <button class="btn btn-secondary btn-rud">Modifier</button>
@@ -86,10 +90,12 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
+
                                     {{ include('document/_delete_form.html.twig') }}
                                     <button class="btn btn-secondary btn-rud">
                                         <a href="{{ path('app_document_edit', {slug_folder: folder.slug, slug: document.slug}) }}">Modifier</a>
                                     </button>
+
                                     <button class="btn btn-secondary btn-rud">
                                         <a href="{{ path('document_download', {'slug': document.slug}) }}">download</a>
                                     </button>

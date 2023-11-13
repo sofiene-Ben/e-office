@@ -73,6 +73,7 @@
 {# {{ include('document/_delete_form.html.twig') }} #}
 
 
+
 <!-- modal 1 -->
 
 <!-- modal 2 -->
@@ -80,6 +81,7 @@
 {# <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Share
 </button> #}
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,7 +94,9 @@
         </button>
       </div>
       {{ form_start(form) }}
+
       {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
       <div class="modal-body">
         {{ form_widget(form.title) }}
         {{ form_row(form.email) }}

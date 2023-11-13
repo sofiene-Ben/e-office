@@ -2,6 +2,7 @@
 
 {% block title %}Hello SearchController!{% endblock %}
 
+
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/search.css') }}">
 {% endblock stylesheets %}
@@ -47,17 +48,18 @@
               {% else %}
               <tr>pas de resultats</tr>
             {% endfor %}
-            
 
           </tbody>
         </table>
       </div>
+
 
       <h2>Libraries</h2>
       <div class="table-responsive">
           <table class="table table-centered">
             <thead>
               <tr>
+
                 <th>Nom</th>
               </tr>
             </thead>
@@ -70,11 +72,14 @@
                   {% else %}
                   <tr>pas de resultats</tr>
               {% endfor %}
+
   
             </tbody>
           </table>
         </div>
+
 </div>
+
 
         
 {% endblock %}

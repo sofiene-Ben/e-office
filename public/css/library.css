@@ -3,11 +3,13 @@ a{
     color: #FFF;
 }
 
+
 /* a:hover {
     color:#FFF;
 }  */
 
 /* ------ navbar -------- */
+
 .navbar-collapse {
     margin-top: 19px;
     width: 100%;
@@ -19,6 +21,7 @@ a{
 .navbar-collapse form {
     margin: 0 10px;
 }
+
 
 /* ------------------ */
 
@@ -114,4 +117,5 @@ th a {
     .btn-box {
         display: block;
     }
+
 }

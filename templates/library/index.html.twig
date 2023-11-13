@@ -6,7 +6,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
+
     <link rel="stylesheet" href="{{ asset('css/library_style.css') }}">
+
 {% endblock stylesheets %}
 
 {% block features %}{% endblock features %}
@@ -42,6 +44,7 @@
         <tbody>
             {% for library in libraries %}
             <tr>
+
                 <th scope="row" class="th-name"><a href="{{ path('app_library_show', {'slug': library.slug}) }}">{{ library.name }}</a></th>
                 <td class="text-right">
                     <button type="button" class="btn btn-primary btn-rud" data-toggle="modal" data-target="#Modal-{{library.slug}}">

@@ -1,0 +1,13 @@
+th a {
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+}
+.modal-body {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-rud {
+    margin: 0 5px;
+}

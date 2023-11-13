@@ -12,11 +12,13 @@ body {
     background-color: #fbfbfd;
 }
 
+
 div h3 {
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     font-weight: 700;
 }
+
 
 nav {
     background-color: #000;
@@ -88,7 +90,9 @@ nav {
     align-items: center;
 }
 
+
 div .card {
+
     margin: 30px 0;
     box-shadow: 2px 4px 37px 10px rgba(0, 0, 0, 0.3);
     width: 18rem;
@@ -110,7 +114,9 @@ div .card {
 
 }
 
+
 div .card-title {
+
     padding: 8px 0;
     margin-bottom: 0px;
 }
@@ -118,6 +124,7 @@ div .card-title {
 .card-text {
     padding: 8px 0;
 }
+
 
 .card-text p {
     font-size: 16px;
@@ -134,7 +141,9 @@ footer {
         justify-content: center;
     }
 
+
     div .card {
+
         margin: 30px;
     }
 }
