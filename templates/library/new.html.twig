@@ -1,11 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New Library{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/cu_style.css') }}">
+{% endblock stylesheets %}
 
 {% block body %}
-    <h1>Create new Library</h1>
+   {# <h1>Create new Library</h1>
 
     {{ include('library/_form.html.twig') }}
 
     <a href="{{ path('app_library_index') }}">back to list</a>
+    #}
+    <div class="container main">
+        <div class="back-btn">
+            <button class="btn btn-primary">
+                <a href="{{ path('app_library_index', {slug_lib: library.slug}) }}"> < retour</a>
+            </button>
+        </div>
+
+    <div class="card">
+        <h5 class="card-header text-center">Nouvelle Librairie</h5>
+        <div class="card-body">
+          <h5 class="card-title">Donnez un nom à la Librairie</h5>
+          {# <form> #}
+            {{ form_start(form) }}
+      {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+            <div class="form-group">
+                {{ form_widget(form) }}
+            </div>
+            <button class="btn btn-primary">{{ button_label|default('enregistrer') }}</button>
+            {{ form_end(form) }}
+
+              
+            {# <div class="form-group">
+              <label for="exampleFormControlFile1">Example file input</label>
+              <input type="file" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+          </form> #}
+           {# <a href="#" class="btn btn-primary">Go somewhere</a> #}
+        </div> 
+      </div>
+    </div>
 {% endblock %}

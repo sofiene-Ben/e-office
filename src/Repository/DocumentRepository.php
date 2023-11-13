@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Folder;
 use App\Entity\Document;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,11 +24,12 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
-    public function findBySearch($word, Folder $folder){
+    public function findBySearch(string $word, User $user){
         $qb = $this->createQueryBuilder('d')
-            ->where('d.name LIKE :search AND d.folder = :folder')
-            ->setParameter('search', '%'.$word.'%')
-            ->setParameter('folder', $folder);
+            ->where('d.name LIKE :search')
+            ->andWhere('d.owner = :user')
+            ->setParameter('user', $user)
+            ->setParameter('search', '%'.$word.'%');
 
         return $qb->getQuery()->getResult();
     }

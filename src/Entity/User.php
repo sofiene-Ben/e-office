@@ -41,11 +41,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Document::class, orphanRemoval: true)]
     private Collection $documents;
 
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Consulting::class, orphanRemoval: true)]
+    private Collection $consultings;
+
     public function __construct()
     {
         $this->libraries = new ArrayCollection();
         $this->folders = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->consultings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -221,6 +225,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($document->getOwner() === $this) {
                 $document->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Consulting>
+     */
+    public function getConsultings(): Collection
+    {
+        return $this->consultings;
+    }
+
+    public function addConsulting(Consulting $consulting): static
+    {
+        if (!$this->consultings->contains($consulting)) {
+            $this->consultings->add($consulting);
+            $consulting->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConsulting(Consulting $consulting): static
+    {
+        if ($this->consultings->removeElement($consulting)) {
+            // set the owning side to null (unless already changed)
+            if ($consulting->getOwner() === $this) {
+                $consulting->setOwner(null);
             }
         }
 

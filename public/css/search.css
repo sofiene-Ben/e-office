@@ -1,0 +1,27 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    /* font-size: 17px; */
+    font-family: 'Open Sans', sans-serif;
+    /* font-weight: 400; */
+}
+
+td a {
+    color: #000;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.data-list {
+    padding: 0 20px;
+}

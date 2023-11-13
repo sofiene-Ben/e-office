@@ -2,84 +2,84 @@
 
 {% block title %}Hello SearchController!{% endblock %}
 
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/search.css') }}">
+{% endblock stylesheets %}
+
 {% block body %}
-    <h2>documents</h2>
+<div class="list-data">
+  <h2>Documents</h2>
+  <div class="table-responsive">
+      <table class="table table-centered">
+        <thead>
+          <tr>
+            <th>Nom</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for document in documents %}
+                
+          <tr>
+            <td><a href="{{ path('app_document_show', {slug_folder: document.folder.slug, slug: document.slug}) }}">{{ document.name }}</a></td>
+          </tr>
+              {% else %}
+                  <tr>pas de resultats</tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Dossiers</h2>
     <div class="table-responsive">
         <table class="table table-centered">
           <thead>
             <tr>
-              <th>id</th>
-              <th>Name</th>
-              <th>voir</th>
+              <th>Nom</th>
             </tr>
           </thead>
           <tbody>
-              {% for document in documents %}
+              {% for folder in folders %}
                   
             <tr>
-              <td>{{ document.id }}</td>
-              <td>{{ document.name }}</td>
-              <td><a href="{{ path('app_document_show', {slug_folder: document.folder.slug, slug: document.slug}) }}">show</a></td>
+              <td><a href="{{ path('app_folder_show', {slug_lib: folder.library.slug, slug: folder.slug}) }}">{{ folder.name }}</a></td>
             </tr>
-                {% else %}
-                    <tr>pas de resultats</tr>
+              {% else %}
+              <tr>pas de resultats</tr>
             {% endfor %}
 
           </tbody>
         </table>
       </div>
 
-      <h2>folders</h2>
+
+      <h2>Libraries</h2>
       <div class="table-responsive">
           <table class="table table-centered">
             <thead>
               <tr>
-                <th>id</th>
-                <th>Name</th>
-                <th>voir</th>
+
+                <th>Nom</th>
               </tr>
             </thead>
             <tbody>
-                {% for folder in folders %}
+                {% for library in libraries %}
                     
               <tr>
-                <td>{{ folder.id }}</td>
-                <td>{{ folder.name }}</td>
-                <td><a href="{{ path('app_folder_show', {slug_lib: folder.library.slug, slug: folder.slug}) }}">show</a></td>
+                <td><a href="{{ path('app_library_show', {'slug': library.slug}) }}">{{ library.name }}</a></td>
               </tr>
-                {% else %}
-                <tr>pas de resultats</tr>
+                  {% else %}
+                  <tr>pas de resultats</tr>
               {% endfor %}
-              
+
   
             </tbody>
           </table>
         </div>
 
-        <h2>libraries</h2>
-        <div class="table-responsive">
-            <table class="table table-centered">
-              <thead>
-                <tr>
-                  <th>id</th>
-                  <th>Name</th>
-                  <th>voir</th>
-                </tr>
-              </thead>
-              <tbody>
-                  {% for library in libraries %}
-                      
-                <tr>
-                  <td>{{ library.id }}</td>
-                  <td>{{ library.name }}</td>
-                  <td><a href="{{ path('app_library_show', {'slug': library.slug}) }}">show</a></td>
-                </tr>
-                    {% else %}
-                    <tr>pas de resultats</tr>
-                {% endfor %}
-    
-              </tbody>
-            </table>
-          </div>
+</div>
+
+
         
 {% endblock %}

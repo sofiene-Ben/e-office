@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('css/lib_show.css') }}">
+
+<link rel="stylesheet" href="{{ asset('css/library_style.css') }}">
+
 {{ parent() }}
 {% endblock stylesheets %}
 
@@ -36,7 +38,11 @@
 </div> #}
 
 <div class="container">
-    <div class="text-right pb-2 pt-2">
+    <div class="text-right pb-2 pt-2 btn-box">
+        <button class="btn btn-secondary btn-black">
+            <a href="{{ path('app_library_index') }}"> < back</a>
+        </button>
+
         <button class="btn btn-primary">
             <a href="{{ path('app_folder_new', {slug_lib: library.slug}) }}">Create new</a>
         </button>

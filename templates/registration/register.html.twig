@@ -1,18 +1,50 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Register{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock stylesheets %}
 
 {% block body %}
-    <h1>Register</h1>
+{% block nav %}{% endblock nav %}
 
-    {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+
+    <div class="container">
+        <div class="container container-small">            
+            {% if app.user %}
+            <div class="mb-3">
+                Vous êtes connecté en temps que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+            <div class="mb-3">
+                <a href="{{ path('app_homepage') }}"> accueil</a>
+            </div>
+            {% else %}
+                <h1 class="h3 mb-3 font-weight-bold text-center">S'enregistrer</h1>
+            
+                {{ form_errors(registrationForm) }}
+
+                {{ form_start(registrationForm) }}
+
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Password'
+                    }) }}
+            
+                    <div class="text-center">
+                        <button class="btn btn-lg btn-primary mt-4" type="submit">
+                            S'enregistrer
+                        </button>
+                    </div>
+                {{ form_end(registrationForm) }}
+                {% if app.user %}
+                {% else %}
+                    <div class="register">
+                        <p>vous avez deja un compte ? <a href="{{ path('app_register') }}">connectez-vous</a></p>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

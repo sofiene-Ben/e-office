@@ -29,6 +29,9 @@ class FolderController extends AbstractController
     #[Route('/', name: 'app_folder_index', methods: ['GET', 'POST'])]
     public function index(Library $library, FolderRepository $folderRepository, Request $request): Response
     {
+        if($library->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
         $folders = $folderRepository->findBy(['library' => $library]);
 
         $form = $this->createForm(SearchDataType::class);
@@ -71,7 +74,9 @@ class FolderController extends AbstractController
     #[Entity('folder', expr: 'repository.findOneBySlug(slug)')]
     public function show(Library $library, Folder $folder, DocumentRepository $documentRepository, Request $request): Response
     {
-
+        if($folder->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
         $documents = $this->documentRepository->findBy(['folder' => $folder]);
 
         $form = $this->createForm(SearchDataType::class);
@@ -92,8 +97,11 @@ class FolderController extends AbstractController
 
     #[Route('/{slug}/edit', name: 'app_folder_edit', methods: ['GET', 'POST'])]
     #[Entity('folder', expr: 'repository.findOneBySlug(slug)')]
-    public function edit(Library $library, Folder $folder, Request $request): Response
+    public function edit(Library $library, Folder $folder, FolderRepository $folderRepository, Request $request): Response
     {
+        if($folder->getOwner() != $this->getUser()){
+            throw $this->createAccessDeniedException("Vous n'avez pas le droit d'accèder !");
+        }
 
         $form = $this->createForm(FolderType::class, $folder);
         $form->handleRequest($request);

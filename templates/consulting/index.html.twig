@@ -2,9 +2,26 @@
 
 {% block title %}Hello ConsultingController!{% endblock %}
 
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock stylesheets %}
+
+{% block nav %}{% endblock nav %}
+{% block notice %}
+    <div style="display: none;">
+        {% include "includes/_notice.html.twig" %}   
+    </div>
+{% endblock notice %}
 {% block body %}
-    {{ form_start(form, {'attr': {'class': 'form-material form-material-bordered'}}) }}
-    {{ form_row(form.code, {attr: {class: 'form-control rounded-1'}}) }}
-    <button type="submit">soumettre</button>
+<div class="container my-5">
+    {{ form_start(form) }}
+    {{ form_row(form.code, {label: false, attr: {class: 'form-control'}}) }}
+    <div class="text-center my-2">
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+    </div>
     {{ form_end(form) }}
+</div>
+
+
 {% endblock %}

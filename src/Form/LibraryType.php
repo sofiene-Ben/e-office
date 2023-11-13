@@ -14,7 +14,7 @@ class LibraryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'name',
+                'label' => 'nom :',
             ])
         ;
     }

@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}document{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/document_style.css') }}">
+{% endblock stylesheets %}
 
 {% block javascripts %}
 <script>
@@ -12,7 +16,7 @@
 {% endblock javascripts %}
 
 {% block body %}
-<h1>document</h1>
+{# <h1>document</h1>
 
 <table class="table">
     <tbody>
@@ -37,24 +41,47 @@
             <td>{{ document.slug }}</td>
         </tr>
     </tbody>
-</table>
+</table> #}
 
-<embed src="{{ asset('uploads/documents/' ~ document.name) }}" type="application/pdf">
+<div class="container contain">
+  <div class="nav-box">
+    <div class="btn-box">
+      <button class="btn btn-primary">
+        <a href="{{ path('app_folder_show', {slug_lib: folder.library.slug, slug: folder.slug}) }}"> < back</a>
+      </button>
+      <h3>document</h3>
+      
+    </div>
+  </div>
+  <div class="separate"></div>
+  <div class="btn-box">
+    <button class="btn btn-primary"><a href="{{ path('app_document_edit', {slug_folder: folder.slug, slug: document.slug}) }}">edit</a></button>
+    {{ include('document/_delete_form.html.twig') }}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">share</button>
+    <button class="btn btn-primary"><a href="{{ path('document_download', {'slug': document.slug}) }}">download</a></button>
+  </div>
+</div>
 
-<a href="{{ path('app_document_index', {slug_folder: folder.slug} ) }}">back to list</a>
+<div class="container contain doc-show">
+  <embed src="{{ path('pdf_show', {filename: document.name } )}}" type="application/pdf">
+</div>
 
-<a href="{{ path('app_document_edit', {slug_folder: folder.slug, slug: document.slug}) }}">edit</a>
+{# <a href="{{ path('app_document_index', {slug_folder: folder.slug} ) }}">back to list</a> #}
 
-{{ include('document/_delete_form.html.twig') }}
+{# <a href="{{ path('app_document_edit', {slug_folder: folder.slug, slug: document.slug}) }}">edit</a> #}
+
+{# {{ include('document/_delete_form.html.twig') }} #}
+
 
 
 <!-- modal 1 -->
 
 <!-- modal 2 -->
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+{# <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Share
-</button>
+</button> #}
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -67,6 +94,9 @@
         </button>
       </div>
       {{ form_start(form) }}
+
+      {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
       <div class="modal-body">
         {{ form_widget(form.title) }}
         {{ form_row(form.email) }}

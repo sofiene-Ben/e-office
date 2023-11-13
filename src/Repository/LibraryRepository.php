@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Library;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,6 +23,16 @@ class LibraryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Library::class);
         $this->container = $container;
+    }
+
+    public function findBySearch(string $word, User $user){
+        $qb = $this->createQueryBuilder('l')
+            ->where('l.name LIKE :search')
+            ->andWhere('l.owner = :user')
+            ->setParameter('user', $user)
+            ->setParameter('search', '%'.$word.'%');
+
+        return $qb->getQuery()->getResult();
     }
 
     public function save(Library $entity, bool $flush = false): void
